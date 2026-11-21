@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfloattext001"]
+
+[ext_resource type="Script" path="res://scripts/FloatingText.gd" id="1_ftext"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_float"]
+font_size = 54
+outline_size = 12
+outline_color = Color(0, 0, 0, 0.8)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(0, 4)
+
+[node name="FloatingText" type="Node2D"]
+z_index = 50
+script = ExtResource("1_ftext")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -40.0
+offset_right = 250.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "COMBO x2!"
+label_settings = SubResource("LabelSettings_float")
+horizontal_alignment = 1
+vertical_alignment = 1
