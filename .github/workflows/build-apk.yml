@@ -1,0 +1,34 @@
+name: "Build Android APK"
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  export-android:
+    name: "Export Godot Android APK"
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+
+      - name: "Setup Android Keystore"
+        run: |
+          mkdir -p ~/.android
+          keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore ~/.android/debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
+
+      - name: "Export Android APK"
+        run: |
+          mkdir -p build/android
+          godot -v --headless --export-debug "Android" build/android/BlockCrash.apk
+
+      - name: "Upload APK Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: "BlockCrash-Android-APK"
+          path: build/android/BlockCrash.apk
+          retention-days: 14
