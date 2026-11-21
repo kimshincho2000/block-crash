@@ -34,15 +34,7 @@ jobs:
             ANDROID_SDK="/root/android-sdk"
           fi
           echo "Found Android SDK at: $ANDROID_SDK"
-          cat << EOF > ~/.config/godot/editor_settings-4.tres
-[gd_resource type="EditorSettings" format=3]
-
-[resource]
-export/android/android_sdk_path = "$ANDROID_SDK"
-export/android/debug_keystore = "build/android/debug.keystore"
-export/android/debug_keystore_user = "androiddebugkey"
-export/android/debug_keystore_pass = "android"
-EOF
+          printf "[gd_resource type=\"EditorSettings\" format=3]\n\n[resource]\nexport/android/android_sdk_path = \"%s\"\nexport/android/debug_keystore = \"build/android/debug.keystore\"\nexport/android/debug_keystore_user = \"androiddebugkey\"\nexport/android/debug_keystore_pass = \"android\"\n" "$ANDROID_SDK" > ~/.config/godot/editor_settings-4.tres
 
       - name: "Export Android APK"
         run: |
