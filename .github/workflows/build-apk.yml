@@ -16,7 +16,7 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v4
 
-      - name: "Setup Godot Templates and Android Keystore"
+      - name: "Setup Godot Templates and Android SDK"
         run: |
           mkdir -p ~/.local/share/godot/export_templates
           if [ -d "/root/.local/share/godot/export_templates" ]; then
@@ -24,17 +24,31 @@ jobs:
           fi
           mkdir -p build/android
           keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore build/android/debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
-          mkdir -p ~/.config/godot
+          
+          # Find Android SDK
           ANDROID_SDK=""
-          if [ -d "/usr/lib/android-sdk" ]; then
-            ANDROID_SDK="/usr/lib/android-sdk"
-          elif [ -d "/opt/android-sdk" ]; then
-            ANDROID_SDK="/opt/android-sdk"
-          elif [ -d "/root/android-sdk" ]; then
-            ANDROID_SDK="/root/android-sdk"
+          for p in /usr/lib/android-sdk /opt/android-sdk /root/android-sdk /usr/local/lib/android/sdk; do
+            if [ -d "$p" ]; then
+              ANDROID_SDK="$p"
+              break
+            fi
+          done
+          
+          # Find Java SDK
+          JAVA_SDK=""
+          if command -v javac >/dev/null 2>&1; then
+            JAVA_SDK=$(dirname $(dirname $(readlink -f $(which javac))))
+          elif [ -n "$JAVA_HOME" ]; then
+            JAVA_SDK="$JAVA_HOME"
+          elif [ -d "/usr/lib/jvm/default-java" ]; then
+            JAVA_SDK="/usr/lib/jvm/default-java"
           fi
-          echo "Found Android SDK at: $ANDROID_SDK"
-          printf "[gd_resource type=\"EditorSettings\" format=3]\n\n[resource]\nexport/android/android_sdk_path = \"%s\"\nexport/android/debug_keystore = \"build/android/debug.keystore\"\nexport/android/debug_keystore_user = \"androiddebugkey\"\nexport/android/debug_keystore_pass = \"android\"\n" "$ANDROID_SDK" > ~/.config/godot/editor_settings-4.tres
+          
+          echo "Android SDK: $ANDROID_SDK"
+          echo "Java SDK: $JAVA_SDK"
+          
+          mkdir -p ~/.config/godot
+          printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/android_sdk_path = "%s"\nexport/android/java_sdk_path = "%s"\nexport/android/debug_keystore = "build/android/debug.keystore"\nexport/android/debug_keystore_user = "androiddebugkey"\nexport/android/debug_keystore_pass = "android"\n' "$ANDROID_SDK" "$JAVA_SDK" > ~/.config/godot/editor_settings-4.tres
 
       - name: "Export Android APK"
         run: |
