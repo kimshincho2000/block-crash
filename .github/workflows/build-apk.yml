@@ -1,63 +1,35 @@
-name: "Build Android APK"
+name: Build Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  export-android:
-    name: "Export Godot Android APK"
+  build:
+    name: Build Native Android APK
     runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:4.3
 
     steps:
-      - name: "Checkout source code"
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: "Setup Godot Templates and Android SDK"
-        run: |
-          mkdir -p ~/.local/share/godot/export_templates
-          if [ -d "/root/.local/share/godot/export_templates" ]; then
-            cp -r /root/.local/share/godot/export_templates/* ~/.local/share/godot/export_templates/
-          fi
-          mkdir -p build/android
-          keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore build/android/debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
-          
-          # Find Android SDK
-          ANDROID_SDK=""
-          for p in /usr/lib/android-sdk /opt/android-sdk /root/android-sdk /usr/local/lib/android/sdk; do
-            if [ -d "$p" ]; then
-              ANDROID_SDK="$p"
-              break
-            fi
-          done
-          
-          # Find Java SDK
-          JAVA_SDK=""
-          if command -v javac >/dev/null 2>&1; then
-            JAVA_SDK=$(dirname $(dirname $(readlink -f $(which javac))))
-          elif [ -n "$JAVA_HOME" ]; then
-            JAVA_SDK="$JAVA_HOME"
-          elif [ -d "/usr/lib/jvm/default-java" ]; then
-            JAVA_SDK="/usr/lib/jvm/default-java"
-          fi
-          
-          echo "Android SDK: $ANDROID_SDK"
-          echo "Java SDK: $JAVA_SDK"
-          
-          mkdir -p ~/.config/godot
-          printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/android_sdk_path = "%s"\nexport/android/java_sdk_path = "%s"\nexport/android/debug_keystore = "build/android/debug.keystore"\nexport/android/debug_keystore_user = "androiddebugkey"\nexport/android/debug_keystore_pass = "android"\n' "$ANDROID_SDK" "$JAVA_SDK" > ~/.config/godot/editor_settings-4.tres
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: "Export Android APK"
-        run: |
-          mkdir -p build/android
-          godot -v --headless --export-debug "Android" build/android/BlockCrash.apk
+      - name: Setup Gradle 8.4
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
 
-      - name: "Upload APK Artifact"
+      - name: Build Debug APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "BlockCrash-Android-APK"
-          path: build/android/BlockCrash.apk
-          retention-days: 14
+          name: BlockCrash-Android-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
