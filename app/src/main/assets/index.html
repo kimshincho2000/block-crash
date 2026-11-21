@@ -14,7 +14,7 @@
   -webkit-touch-callout: none;
 }
 body {
-  background: radial-gradient(circle at 50% 20%, #151a3c 0%, #080a14 100%);
+  background: radial-gradient(circle at 50% 15%, #161c42 0%, #080a14 100%);
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   overflow: hidden;
@@ -46,48 +46,53 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
-.crown-icon {
-  font-size: 28px;
-  filter: drop-shadow(0 0 10px #ffd700);
-  animation: crownPulse 2s infinite ease-in-out;
+.crown-icon-wrap {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: crownFloat 2.5s infinite ease-in-out;
+  filter: drop-shadow(0 0 12px rgba(255, 200, 0, 0.7));
 }
-@keyframes crownPulse {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.1) rotate(3deg); }
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(2deg); }
 }
 .title-text {
   font-size: 22px;
   font-weight: 900;
-  letter-spacing: 0.5px;
-  background: linear-gradient(180deg, #ffffff 0%, #ffdf6d 60%, #ff9800 100%);
+  letter-spacing: 0.8px;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #ffffff 0%, #ffd966 50%, #ff9800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
 }
 .score-board {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 .score-box {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 5px 14px;
   text-align: center;
-  min-width: 70px;
-  backdrop-filter: blur(8px);
+  min-width: 76px;
+  backdrop-filter: blur(10px);
 }
 .score-box .label {
   font-size: 10px;
   text-transform: uppercase;
   color: #8fa0c9;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
 }
 .score-box .val {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 900;
   color: #fff;
 }
@@ -98,23 +103,26 @@ header {
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 4px 0;
+  gap: 10px;
+  margin: 6px 0;
 }
 .btn-powerup {
   background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
   border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 12px;
-  padding: 6px 14px;
+  border-radius: 14px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   color: #fff;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform 0.1s, background 0.2s;
+  transition: transform 0.1s, border-color 0.2s, background 0.2s;
+}
+.btn-powerup svg {
+  display: block;
 }
 .btn-powerup:active {
   transform: scale(0.92);
@@ -122,30 +130,31 @@ header {
 .btn-powerup.active {
   border-color: #ffd700;
   background: rgba(255, 215, 0, 0.25);
-  box-shadow: 0 0 12px #ffd700;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
 }
 .btn-powerup .count {
   background: #ff4757;
   color: #fff;
   font-size: 11px;
-  padding: 1px 6px;
-  border-radius: 8px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
 }
 #board-wrapper {
   position: relative;
   width: 100%;
   max-width: 380px;
   aspect-ratio: 1;
-  background: #0f132a;
-  border-radius: 16px;
+  background: #0d1127;
+  border-radius: 18px;
   padding: 8px;
-  border: 2px solid #232a52;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.6);
+  border: 2px solid #232c58;
+  box-shadow: inset 0 0 24px rgba(0,0,0,0.85), 0 12px 36px rgba(0,0,0,0.7);
 }
 #game-canvas {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   display: block;
 }
 #tray {
@@ -164,9 +173,14 @@ header {
   align-items: center;
   justify-content: center;
   background: rgba(255,255,255,0.03);
-  border: 1px dashed rgba(255,255,255,0.1);
-  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
   position: relative;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.tray-slot.unplaceable {
+  opacity: 0.35;
+  filter: grayscale(60%);
 }
 #drag-canvas {
   position: fixed;
@@ -184,8 +198,8 @@ header {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(4, 7, 20, 0.85);
-  backdrop-filter: blur(10px);
+  background: rgba(4, 7, 20, 0.88);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,45 +213,87 @@ header {
   pointer-events: auto;
 }
 .modal-card {
-  background: linear-gradient(180deg, #1e264f 0%, #0f1430 100%);
+  background: linear-gradient(180deg, #1b224d 0%, #0d122d 100%);
   border: 2px solid #3d4a8c;
-  border-radius: 24px;
-  padding: 30px 24px;
+  border-radius: 26px;
+  padding: 28px 22px;
   text-align: center;
-  width: 85%;
-  max-width: 320px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(78, 108, 255, 0.3);
+  width: 88%;
+  max-width: 330px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.95), 0 0 35px rgba(78, 108, 255, 0.3);
   transform: scale(0.85);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .modal-overlay.show .modal-card {
   transform: scale(1);
 }
+.modal-icon-wrap {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 71, 87, 0.15);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
 .modal-title {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 900;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   background: linear-gradient(180deg, #ff4757, #ff6b81);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.modal-subtitle {
+  font-size: 13px;
+  color: #8fa0c9;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
 .modal-score {
-  font-size: 44px;
+  font-size: 46px;
   font-weight: 900;
   color: #fff;
-  margin: 10px 0;
-  text-shadow: 0 0 15px rgba(255,255,255,0.5);
+  margin: 8px 0;
+  text-shadow: 0 0 20px rgba(255,255,255,0.4);
 }
 .modal-best {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font-size: 14px;
   color: #ffd700;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   font-weight: 700;
+}
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.btn-revive {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, #ffb800 0%, #e67e00 100%);
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(255, 184, 0, 0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 .btn-primary {
   width: 100%;
   padding: 14px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
   color: #fff;
   background: linear-gradient(180deg, #00e676 0%, #00a854 100%);
@@ -247,8 +303,12 @@ header {
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.btn-primary:active {
+.btn-primary:active, .btn-revive:active {
   transform: scale(0.96);
 }
 </style>
@@ -257,8 +317,33 @@ header {
 <div id="game-container">
   <header>
     <div class="brand">
-      <div class="crown-icon">👑</div>
-      <div class="title-text">BLOCK CRASH</div>
+      <div class="crown-icon-wrap">
+        <svg viewBox="0 0 64 64" width="40" height="40" fill="none">
+          <defs>
+            <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE066"/>
+              <stop offset="50%" stop-color="#FFB800"/>
+              <stop offset="100%" stop-color="#E68A00"/>
+            </linearGradient>
+            <linearGradient id="jewelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00FFFF"/>
+              <stop offset="100%" stop-color="#0080FF"/>
+            </linearGradient>
+          </defs>
+          <path d="M8 46L14 18L26 32L32 12L38 32L50 18L56 46Z" fill="url(#crownGrad)" stroke="#FFA000" stroke-width="2" stroke-linejoin="round"/>
+          <rect x="8" y="46" width="48" height="9" rx="3" fill="#D47A00" stroke="#FFE066" stroke-width="1.5"/>
+          <polygon points="32,22 35,26 32,30 29,26" fill="url(#jewelGrad)"/>
+          <circle cx="14" cy="17" r="3" fill="#FFE066"/>
+          <circle cx="32" cy="11" r="3.5" fill="#FFE066"/>
+          <circle cx="50" cy="17" r="3" fill="#FFE066"/>
+          <circle cx="20" cy="50.5" r="2.2" fill="#FF3366"/>
+          <circle cx="32" cy="50.5" r="2.5" fill="url(#jewelGrad)"/>
+          <circle cx="44" cy="50.5" r="2.2" fill="#FF3366"/>
+        </svg>
+      </div>
+      <div>
+        <div class="title-text">BLOCK CRASH</div>
+      </div>
     </div>
     <div class="score-board">
       <div class="score-box">
@@ -274,15 +359,28 @@ header {
 
   <div class="powerups-bar">
     <button class="btn-powerup" id="btn-hammer" onclick="toggleHammer()">
-      <span>🔨 Bolg'a</span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 4l5 5-2 2-5-5 2-2z" fill="#00E5FF" stroke="#00B8D4"/>
+        <path d="M13 6l-9 9a2.12 2.12 0 003 3l9-9" stroke="#E0E6ED" stroke-width="2"/>
+      </svg>
+      <span>Bolg'a</span>
       <span class="count" id="count-hammer">2</span>
     </button>
+
     <button class="btn-powerup" id="btn-rotate" onclick="toggleRotate()">
-      <span>🔄 Burish</span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2v6h-6" stroke="#00E676"/>
+        <path d="M21.34 15.57a9 9 0 11-2.09-8.48L21.5 8" stroke="#00E676"/>
+      </svg>
+      <span>Burish</span>
       <span class="count" id="count-rotate">3</span>
     </button>
+
     <button class="btn-powerup" id="btn-reroll" onclick="useReroll()">
-      <span>⚡ Yangilash</span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#FFD700" stroke="#FFB800"/>
+      </svg>
+      <span>Yangilash</span>
       <span class="count" id="count-reroll">1</span>
     </button>
   </div>
@@ -300,13 +398,40 @@ header {
 
 <canvas id="drag-canvas"></canvas>
 
+<!-- GAME OVER MODAL -->
 <div class="modal-overlay" id="gameover-modal">
   <div class="modal-card">
+    <div class="modal-icon-wrap">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF4757" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="15" y1="9" x2="9" y2="15"/>
+        <line x1="9" y1="9" x2="15" y2="15"/>
+      </svg>
+    </div>
     <div class="modal-title">O'YIN TUGADI!</div>
-    <div style="font-size:13px; color:#8fa0c9;">Siz to'plagan ball</div>
+    <div class="modal-subtitle">Tosh qo'yishga joy qolmadi</div>
     <div class="modal-score" id="final-score">0</div>
-    <div class="modal-best" id="final-best">🏆 Rekord: 0</div>
-    <button class="btn-primary" onclick="restartGame()">Qaytadan o'ynash</button>
+    <div class="modal-best">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9H4.5a2.5 2.5 0 010-5H6" stroke="#FFD700"/>
+        <path d="M18 9h1.5a2.5 2.5 0 000-5H18" stroke="#FFD700"/>
+        <path d="M4 4h16v6a7 7 0 01-14 0V4z" fill="#FFB800" stroke="#FFE066"/>
+        <path d="M12 17v4" stroke="#FFD700" stroke-width="2.5"/>
+        <path d="M8 21h8" stroke="#FFD700" stroke-width="2.5"/>
+      </svg>
+      <span id="final-best">Rekord: 0</span>
+    </div>
+    <div class="modal-actions" id="modal-actions-container">
+      <button class="btn-primary" onclick="restartGame()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 0115.54-6.36L21 8" stroke="#fff"/>
+          <path d="M21 3v5h-5" stroke="#fff"/>
+          <path d="M21 12a9 9 0 01-15.54 6.36L3 16" stroke="#fff"/>
+          <path d="M3 21v-5h5" stroke="#fff"/>
+        </svg>
+        <span>Qaytadan boshlash</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -338,7 +463,7 @@ const AudioEngine = {
   },
   pickup() {
     this.init();
-    this.playTone(380, 'sine', 0.08, 0.15);
+    this.playTone(400, 'sine', 0.08, 0.15);
   },
   drop() {
     this.init();
@@ -363,9 +488,10 @@ const AudioEngine = {
   },
   gameover() {
     this.init();
-    [320, 280, 240, 180].forEach((freq, idx) => {
-      setTimeout(() => this.playTone(freq, 'sawtooth', 0.3, 0.2), idx * 100);
+    [320, 270, 220, 160].forEach((freq, idx) => {
+      setTimeout(() => this.playTone(freq, 'sawtooth', 0.35, 0.25), idx * 110);
     });
+    if (navigator.vibrate) navigator.vibrate([80, 50, 120]);
   }
 };
 
@@ -376,7 +502,7 @@ let score = 0;
 let bestScore = parseInt(localStorage.getItem('blockcrash_best') || '0', 10);
 let comboCount = 0;
 
-// Powerup states
+// Powerup counts
 let hammers = 2;
 let rotates = 3;
 let rerolls = 1;
@@ -404,7 +530,7 @@ const SHAPES = [
   { color: 4, matrix: [[1,1,1,1]] },
   { color: 4, matrix: [[1],[1],[1],[1]] },
   { color: 7, matrix: [[1,1,1,1,1]] },
-  { color: 7, matrix: [[1],[1],[1],[1],[1]] },
+  { color: 7, matrix: [[1],[1],[1],[1]] },
   // squares
   { color: 5, matrix: [[1,1],[1,1]] },
   { color: 1, matrix: [[1,1,1],[1,1,1],[1,1,1]] },
@@ -533,7 +659,7 @@ function drawJewelBlock(context, x, y, size, colorId, alpha = 1) {
   // Specular shine dot
   context.beginPath();
   context.arc(x + size * 0.35, y + size * 0.35, size * 0.12, 0, Math.PI * 2);
-  context.fillStyle = 'rgba(255, 255, 255, 0.7)';
+  context.fillStyle = 'rgba(255, 255, 255, 0.75)';
   context.fill();
 
   context.restore();
@@ -557,8 +683,7 @@ function spawnClearParticles(gx, gy, colorId) {
       color: c.main,
       alpha: 1,
       rot: Math.random() * Math.PI,
-      vrot: (Math.random() - 0.5) * 0.2,
-      life: 1
+      vrot: (Math.random() - 0.5) * 0.2
     });
   }
 }
@@ -590,13 +715,13 @@ function drawBoard() {
       const s = cellSize - 2;
 
       // Base socket
-      ctx.fillStyle = '#141935';
+      ctx.fillStyle = '#141836';
       ctx.beginPath();
       ctx.roundRect(x, y, s, s, 6);
       ctx.fill();
 
       // Inner border
-      ctx.strokeStyle = '#20284d';
+      ctx.strokeStyle = '#1e254d';
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -612,7 +737,6 @@ function drawBoard() {
     const { gx, gy, shape, clearRows, clearCols } = ghostPlacement;
     const m = shape.matrix;
 
-    // Ghost blocks
     for (let r = 0; r < m.length; r++) {
       for (let c = 0; c < m[r].length; c++) {
         if (m[r][c] === 1) {
@@ -623,21 +747,21 @@ function drawBoard() {
       }
     }
 
-    // Highlight rows that will be cleared
+    // Highlight rows that will clear
     clearRows.forEach(r => {
-      ctx.fillStyle = 'rgba(255, 235, 59, 0.25)';
+      ctx.fillStyle = 'rgba(255, 235, 59, 0.28)';
       ctx.fillRect(offset, offset + r * cellSize, GRID_SIZE * cellSize, cellSize - 2);
     });
-    // Highlight columns that will be cleared
+    // Highlight columns that will clear
     clearCols.forEach(c => {
-      ctx.fillStyle = 'rgba(255, 235, 59, 0.25)';
+      ctx.fillStyle = 'rgba(255, 235, 59, 0.28)';
       ctx.fillRect(offset + c * cellSize, offset, cellSize - 2, GRID_SIZE * cellSize);
     });
   }
 
-  // Hammer mode cursor highlight
+  // Hammer mode border highlight
   if (activeMode === 'hammer') {
-    ctx.strokeStyle = '#ffd700';
+    ctx.strokeStyle = '#00e5ff';
     ctx.lineWidth = 2;
     ctx.strokeRect(offset, offset, GRID_SIZE * cellSize, GRID_SIZE * cellSize);
   }
@@ -647,7 +771,7 @@ function drawBoard() {
     const p = particles[i];
     p.x += p.vx;
     p.y += p.vy;
-    p.vy += 0.25; // gravity
+    p.vy += 0.25;
     p.rot += p.vrot;
     p.alpha -= 0.025;
 
@@ -682,7 +806,7 @@ function drawBoard() {
     ctx.fillStyle = ft.color;
     ctx.textAlign = 'center';
     ctx.shadowColor = '#000';
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 10;
     ctx.fillText(ft.text, ft.x, ft.y);
     ctx.restore();
   }
@@ -706,6 +830,17 @@ function canPlace(gx, gy, matrix) {
   return true;
 }
 
+function hasAnyValidMoveForShape(shape) {
+  if (!shape) return false;
+  const m = shape.matrix;
+  for (let r = 0; r < GRID_SIZE; r++) {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      if (canPlace(c, r, m)) return true;
+    }
+  }
+  return false;
+}
+
 // Tray & Shape Generation
 function getRandomShape() {
   const s = SHAPES[Math.floor(Math.random() * SHAPES.length)];
@@ -719,16 +854,51 @@ function replenishTray() {
   for (let i = 0; i < 3; i++) {
     trayPieces[i] = getRandomShape();
   }
+
+  // Smart guarantee: make sure at least one piece can fit if board isn't completely full
+  let hasMove = false;
+  for (let i = 0; i < 3; i++) {
+    if (hasAnyValidMoveForShape(trayPieces[i])) {
+      hasMove = true;
+      break;
+    }
+  }
+
+  if (!hasMove) {
+    const easyShapes = [
+      { color: 1, matrix: [[1]] },
+      { color: 2, matrix: [[1,1]] },
+      { color: 2, matrix: [[1],[1]] },
+      { color: 5, matrix: [[1,1],[1,1]] }
+    ];
+    for (const es of easyShapes) {
+      if (hasAnyValidMoveForShape(es)) {
+        trayPieces[0] = { color: es.color, matrix: JSON.parse(JSON.stringify(es.matrix)) };
+        break;
+      }
+    }
+  }
+
   renderTray();
   checkGameOver();
 }
 
 function renderTray() {
   for (let i = 0; i < 3; i++) {
-    const slot = document.getElementById(`slot-0`.replace('0', i));
+    const slot = document.getElementById(`slot-${i}`);
     slot.innerHTML = '';
     const shape = trayPieces[i];
-    if (!shape) continue;
+    if (!shape) {
+      slot.classList.remove('unplaceable');
+      continue;
+    }
+
+    const canFit = hasAnyValidMoveForShape(shape);
+    if (!canFit) {
+      slot.classList.add('unplaceable');
+    } else {
+      slot.classList.remove('unplaceable');
+    }
 
     const miniCanvas = document.createElement('canvas');
     const m = shape.matrix;
@@ -756,7 +926,7 @@ let draggingSlot = null;
 let dragShape = null;
 let dragX = 0;
 let dragY = 0;
-const FINGER_OFFSET_Y = 70; // Lift above finger
+const FINGER_OFFSET_Y = 70;
 
 function initDragEvents() {
   for (let i = 0; i < 3; i++) {
@@ -865,7 +1035,6 @@ function updateGhost() {
   const gy = Math.round((relY - 7) / cellSize);
 
   if (canPlace(gx, gy, m)) {
-    // Calculate which rows and cols will clear
     const tempBoard = board.map(row => [...row]);
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -932,7 +1101,6 @@ function processLineClears() {
     const lineScore = totalLines * 120 * comboCount;
     score += lineScore;
 
-    // Spawning particles for cleared blocks
     fullRows.forEach(r => {
       for (let c = 0; c < GRID_SIZE; c++) {
         spawnClearParticles(c, r, board[r][c]);
@@ -944,7 +1112,6 @@ function processLineClears() {
       }
     });
 
-    // Clear from board
     fullRows.forEach(r => {
       for (let c = 0; c < GRID_SIZE; c++) board[r][c] = 0;
     });
@@ -954,8 +1121,7 @@ function processLineClears() {
 
     AudioEngine.lineClear(comboCount);
 
-    // Floating Combo texts
-    const comboTitles = ['AJOYIB! 🔥', 'SUPER! ⚡', 'DOHIYONA! 👑', 'TO\'XTATIB BO\'LMAS! 💥'];
+    const comboTitles = ['AJOYIB!', 'SUPER!', 'DOHIYONA!', 'MUKAMMAL!'];
     const title = comboTitles[Math.min(comboCount - 1, comboTitles.length - 1)];
     addFloatingText(title, boardWidth / 2, boardWidth / 2 - 20, '#ffd700', 30);
     addFloatingText(`+${lineScore}`, boardWidth / 2, boardWidth / 2 + 25, '#00e676', 24);
@@ -966,7 +1132,7 @@ function processLineClears() {
   updateScores();
 }
 
-// Powerups Implementation
+// Powerups
 function toggleHammer() {
   if (hammers <= 0) return;
   activeMode = activeMode === 'hammer' ? null : 'hammer';
@@ -984,7 +1150,6 @@ function toggleRotate() {
 function rotatePiece(slotIdx) {
   const p = trayPieces[slotIdx];
   if (!p) return;
-  // Rotate matrix 90deg clockwise
   const m = p.matrix;
   const rows = m.length;
   const cols = m[0].length;
@@ -1012,7 +1177,7 @@ function useReroll() {
   AudioEngine.pickup();
 }
 
-// Click on board (for Hammer)
+// Click on board (Hammer)
 canvas.addEventListener('click', (e) => {
   if (activeMode !== 'hammer') return;
   const rect = canvas.getBoundingClientRect();
@@ -1029,38 +1194,85 @@ canvas.addEventListener('click', (e) => {
     activeMode = null;
     document.getElementById('btn-hammer').classList.remove('active');
     AudioEngine.drop();
+    renderTray();
     checkGameOver();
   }
 });
 
-// Check Game Over
+// CHECK GAME OVER
 function checkGameOver() {
   const availableShapes = trayPieces.filter(p => p !== null);
   if (availableShapes.length === 0) return;
 
+  // Check if any shape can fit
   let hasValidMove = false;
   for (const shape of availableShapes) {
-    for (let r = 0; r < GRID_SIZE; r++) {
-      for (let c = 0; c < GRID_SIZE; c++) {
-        if (canPlace(c, r, shape.matrix)) {
-          hasValidMove = true;
-          break;
-        }
-      }
-      if (hasValidMove) break;
+    if (hasAnyValidMoveForShape(shape)) {
+      hasValidMove = true;
+      break;
     }
-    if (hasValidMove) break;
   }
 
-  if (!hasValidMove && hammers === 0 && rotates === 0 && rerolls === 0) {
-    showGameOver();
+  // IF NO SHAPE CAN FIT: IMMEDIATE GAME OVER!
+  if (!hasValidMove) {
+    setTimeout(showGameOver, 250);
   }
 }
 
 function showGameOver() {
   AudioEngine.gameover();
   document.getElementById('final-score').innerText = score;
-  document.getElementById('final-best').innerText = `🏆 Rekord: ${bestScore}`;
+  document.getElementById('final-best').innerText = `Rekord: ${bestScore}`;
+
+  // Build actions buttons
+  const container = document.getElementById('modal-actions-container');
+  container.innerHTML = '';
+
+  if (rerolls > 0) {
+    const btnReroll = document.createElement('button');
+    btnReroll.className = 'btn-revive';
+    btnReroll.innerHTML = `
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#fff" stroke="#fff"/>
+      </svg>
+      <span>Yangi toshlar bilan davom etish (${rerolls})</span>
+    `;
+    btnReroll.onclick = () => {
+      document.getElementById('gameover-modal').classList.remove('show');
+      useReroll();
+    };
+    container.appendChild(btnReroll);
+  } else if (hammers > 0) {
+    const btnHammer = document.createElement('button');
+    btnHammer.className = 'btn-revive';
+    btnHammer.innerHTML = `
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 4l5 5-2 2-5-5 2-2z" fill="#fff" stroke="#fff"/>
+        <path d="M13 6l-9 9a2.12 2.12 0 003 3l9-9" stroke="#fff" stroke-width="2"/>
+      </svg>
+      <span>Bolg'a bilan blok sindirish (${hammers})</span>
+    `;
+    btnHammer.onclick = () => {
+      document.getElementById('gameover-modal').classList.remove('show');
+      toggleHammer();
+    };
+    container.appendChild(btnHammer);
+  }
+
+  const btnRestart = document.createElement('button');
+  btnRestart.className = 'btn-primary';
+  btnRestart.innerHTML = `
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 12a9 9 0 0115.54-6.36L21 8" stroke="#fff"/>
+      <path d="M21 3v5h-5" stroke="#fff"/>
+      <path d="M21 12a9 9 0 01-15.54 6.36L3 16" stroke="#fff"/>
+      <path d="M3 21v-5h5" stroke="#fff"/>
+    </svg>
+    <span>Qaytadan boshlash</span>
+  `;
+  btnRestart.onclick = restartGame;
+  container.appendChild(btnRestart);
+
   document.getElementById('gameover-modal').classList.add('show');
 }
 
